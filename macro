@@ -1,0 +1,41 @@
+?zróżnicować kultury i zagęszczenia martwych komórek 
+imp = IJ.openImage("/mnt/Data/sciences/ICHB/obs_short_copy/17VI15_2_GV_20_108_0_B.tif");
+
+IJ.run(imp, "Auto Threshold", "method=Intermodes white");
+
+run("Subtract Background...", "rolling=20");
+# IJ.run(imp, "Gray Morphology", "radius=3 type=circle operator=open");
+run("Subtract Background...", "rolling=5 create");
+# IJ.run(imp, "Auto Threshold", "method=Default white");
+IJ.run(imp, "Make Binary", "");
+
+image adjust auto threshold intermodes
+process morphology
+
+imp.close();
+
+
+
+###
+run("Find Maxima...", "noise=40 output=[Segmented Particles] exclude light");
+
+run("Analyze Particles...", "size=0-Infinity circularity=0 show=Outlines display include summarize in_situ");
+
+
+
+saveAs("Results", "/mnt/Data/sciences/ICHB/Summary_test.xls");
+##
+
+run("OR...", "value=1111111");
+run("Remove Outliers...", "radius=9 threshold=50 which=Bright");
+run("Make Binary");
+run("Measure");
+
+
+run("Exp");
+run("Subtract Background...", "rolling=5 create");
+run("Minimum...", "radius=6");
+run("Set Measurements...", "area mean standard min skewness kurtosis stack redirect=None decimal=3");
+run("Measure");
+
+
